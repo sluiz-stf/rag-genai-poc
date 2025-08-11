@@ -1,0 +1,10 @@
+﻿__pycache__/
+.venv/
+.env
+.DS_Store
+data/chroma/
+data/processed/
+data/raw/
+.pytest_cache/
+.cache/
+*.log
