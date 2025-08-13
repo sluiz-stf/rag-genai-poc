@@ -8,6 +8,10 @@ import chromadb
 from chromadb.config import Settings
 
 from src.generator.llm import chat_complete
+from langchain_openai import OpenAIEmbeddings
+
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-large")
+emb = OpenAIEmbeddings(model=EMBEDDING_MODEL)
 
 app = FastAPI(
     title="RAG Corporate API",
@@ -56,16 +60,19 @@ def get_collection():
 def retrieve_documents(question: str, top_k: int = 5) -> List[Dict[str, Any]]:
     """Retrieve relevant documents from ChromaDB."""
     collection = get_collection()
-    
+
+    # Embeda a pergunta com o MESMO modelo do índice
+    q_vec = emb.embed_query(question)
+
     results = collection.query(
-        query_texts=[question],
+        query_embeddings=[q_vec],
         n_results=top_k,
         include=["documents", "metadatas", "distances"]
     )
-    
-    if not results["documents"] or not results["documents"][0]:
+
+    if not results.get("documents") or not results["documents"] or not results["documents"][0]:
         return []
-    
+
     docs = []
     for i in range(len(results["documents"][0])):
         docs.append({
@@ -73,7 +80,6 @@ def retrieve_documents(question: str, top_k: int = 5) -> List[Dict[str, Any]]:
             "metadata": results["metadatas"][0][i],
             "distance": results["distances"][0][i]
         })
-    
     return docs
 
 def rerank_documents(docs: List[Dict[str, Any]], question: str) -> List[Dict[str, Any]]:

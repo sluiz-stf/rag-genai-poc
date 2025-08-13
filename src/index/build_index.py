@@ -41,3 +41,14 @@ def main():
 
     coll.upsert(ids=ids, documents=texts, metadatas=metadatas, embeddings=vectors)
     print(f"Indexed {len(ids)} chunks")
+    print(f">> Count atual na coleção: {coll.count()}")
+
+if __name__ == "__main__":
+    try:
+        print(">> Iniciando indexação...")
+        main()
+        print(">> Indexação concluída.")
+    except Exception as e:
+        import traceback
+        print("Index build failed:", e)
+        traceback.print_exc()

@@ -11,8 +11,8 @@ services:
       - CHROMA_COLLECTION=${CHROMA_COLLECTION:-docs}
       - PYTHONPATH=/app
     volumes:
+      - ./:/app
       - ./data:/app/data
-      - ./.env:/app/.env:ro
     command: ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
