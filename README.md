@@ -2,11 +2,11 @@
 
 PoC de Retrieval-Augmented Generation (RAG) baseada em um projeto real aplicado em cliente e disponibilizada em formato simples para reprodução rápida. O objetivo é reduzir o tempo entre ideia e demonstração, oferecer um baseline técnico claro e facilitar a evolução colaborativa.
 
-O que é RAG (em termos práticos)
+# O que é RAG (em termos práticos)
 
 RAG combina um LLM com uma camada de recuperação de contexto sobre documentos internos. Em vez de “alucinar”, o modelo responde com base em trechos relevantes recuperados de um índice vetorial e cita as fontes. O fluxo é: ingestão → chunking → embeddings → indexação → recuperação top-k → re-ranking (opcional) → geração condicionada ao contexto com citações.
 
-Principais funcionalidades
+# Principais funcionalidades
 
 Ingestão e chunking: leitura de PDFs/MD/TXT, chunks ~400 tokens, metadados enriquecidos (title, doc_id, section e, quando disponível, page e source).
 
@@ -18,7 +18,7 @@ Geração com contexto: endpoint /ask monta prompt com os trechos recuperados e 
 
 Replicabilidade: dependências mínimas, código direto ao ponto, ideal para estudo e evolução.
 
-Arquitetura (Visão Geral)
+# Arquitetura (Visão Geral)
 flowchart LR
     A[Usuário/API Client] -->|question| B[FastAPI /ask]
     B --> C[Retriever\n(ChromaDB query)]
@@ -52,7 +52,7 @@ LLM: OpenAI Chat (gpt-4o-mini padrão, ajustável via .env).
 Quickstart
 1) Setup
 python -m venv .venv
-# Windows
+Windows
 .venv\\Scripts\\activate
 pip install -r requirements.txt
 
@@ -93,7 +93,7 @@ No Swagger, chame POST /ask com:
 
 Resposta esperada: texto ancorado em trechos dos documentos, com citações inline do tipo [Arquivo.pdf#pX-cY] e sources contendo metadados e snippet.
 
-Estrutura do Projeto
+# Estrutura do Projeto
 rag-genai-poc/
 ├─ src/
 │  ├─ api/
@@ -154,7 +154,7 @@ Response (exemplo abreviado):
   ]
 }
 
-Roadmap (aberto a contribuições)
+# Roadmap (aberto a contribuições)
 
 Re-ranking com cross-encoder local (SentenceTransformers) para melhorar precisão.
 
@@ -178,7 +178,7 @@ Formato de mensagens inválido: a API de chat espera messages=[{role, content}, 
 
 Chroma include: use somente itens válidos em include=["documents","metadatas","distances"].
 
-Licença e uso interno
+# Licença e uso interno
 
 PoC criada para uso interno/educacional e rápida validação. Adapte livremente para seus casos.
 
