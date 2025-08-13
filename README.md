@@ -19,25 +19,32 @@ Geração com contexto: endpoint /ask monta prompt com os trechos recuperados e 
 Replicabilidade: dependências mínimas, código direto ao ponto, ideal para estudo e evolução.
 
 # Arquitetura (Visão Geral)
+```mermaid
+---
+config:
+  flowchart:
+    htmlLabels: false
+---
 flowchart LR
-    A[Usuário/API Client] -->|question| B[FastAPI /ask]
-    B --> C[Retriever\n(ChromaDB query)]
-    C -->|top-k docs + metadados| D[Reranker (opcional)]
-    D --> E[Prompt Builder\n(Context + Question)]
-    E --> F[LLM (Chat Completions)]
-    F -->|answer + citations| B
+  A[Usuário/API Client] -->|question| B[FastAPI /ask]
+  B --> C[Retriever<br/>ChromaDB query]
+  C -->|top-k docs + metadados| D[Reranker opcional]
+  D --> E[Prompt Builder<br/>Context + Question]
+  E --> F[LLM Chat Completions]
+  F -->|answer + citations| B
 
-    subgraph Persistência
-      G[ChromaDB\n(data/chroma)]
-    end
+  subgraph Persistência
+    G[ChromaDB<br/>data/chroma]
+  end
 
-    subgraph Indexação (offline)
-      H[Ingestão + Chunking]
-      I[Embeddings\n(OpenAI)]
-      H --> I --> G
-    end
+  subgraph Indexação
+    H[Ingestão + Chunking]
+    I[Embeddings<br/>OpenAI]
+    H --> I --> G
+  end
 
-    C <-- query_embeddings --> I
+  C <-- query_embeddings --> I
+```
 
 Stack
 
