@@ -46,7 +46,7 @@ flowchart LR
   C <-- query_embeddings --> I
 ```
 
-Stack
+**Stack**
 
 Linguagem/Runtime: Python 3.11, FastAPI, Uvicorn.
 
@@ -56,77 +56,104 @@ Embeddings: OpenAI (text-embedding-3-large/small) — com opção futura de Sent
 
 LLM: OpenAI Chat (gpt-4o-mini padrão, ajustável via .env).
 
-Quickstart
-1) Setup
+# Quickstart
+
+**1) Setup**
+
 python -m venv .venv
+
 Windows
+
 .venv\\Scripts\\activate
+
 pip install -r requirements.txt
 
-2) Configuração (.env)
+**2) Configuração (.env)**
 
 Crie um arquivo .env na raiz com, por exemplo:
 
 OPENAI_API_KEY=sk-...
+
 EMBEDDING_MODEL=text-embedding-3-small
+
 CHAT_MODEL=gpt-4o-mini
+
 CHROMA_PATH=data/chroma
+
 CHROMA_COLLECTION=docs
 
-3) Dados de exemplo
+**3) Dados de exemplo**
 
 Coloque 1–2 arquivos em data/raw (PDF/MD/TXT). Se preferir manter o repositório limpo, use data/examples para compartilhar exemplos e ignore data/raw no Git.
 
-4) Construir o índice
+**4) Construir o índice**
+ 
 python -m src.index.build_index
-
 
 Saída esperada: Indexed N chunks
 
-5) Subir a API
+**5) Subir a API**
+ 
 uvicorn src.api.main:app --reload --port 8000
-
 
 Acesse Swagger: http://127.0.0.1:8000/docs
 
-6) Testar
+**6) Testar**
 
 No Swagger, chame POST /ask com:
 
 {
-  "question": "Do que trata a Lei 9.099?"
+  "question": "sua questão"
 }
 
 
 Resposta esperada: texto ancorado em trechos dos documentos, com citações inline do tipo [Arquivo.pdf#pX-cY] e sources contendo metadados e snippet.
 
 # Estrutura do Projeto
+
 rag-genai-poc/
+
 ├─ src/
+
 │  ├─ api/
+
 │  │  └─ main.py            # FastAPI (/ask), retriever simples, prompt builder, formatação de fontes
+
 │  ├─ generator/
+
 │  │  └─ llm.py             # Wrapper de chat para OpenAI (ou Azure OpenAI)
+
 │  ├─ index/
+
 │  │  └─ build_index.py     # Ingestão, chunking, embeddings e upsert no Chroma
+
 │  └─ ...
+
 ├─ data/
+
 │  ├─ raw/                  # Documentos de entrada (não versionados por padrão)
+
 │  ├─ processed/            # Opcional para limpeza/conversões
+
 │  └─ chroma/               # Persistência local do vetor store
+
 ├─ .env                     # Configs (não versionado)
+
 ├─ requirements.txt
+
 ├─ README.md
+
 └─ .gitignore
 
-Detalhes técnicos relevantes
-Ingestão e indexação
+# Detalhes técnicos relevantes
+
+**Ingestão e indexação**
 
 chunk_document(...) divide por ~400 tokens (ajustável) e preenche metadados úteis: title, doc_id, section, e quando disponível page e source.
 
 build_index.py gera embeddings com OpenAIEmbeddings e faz upsert no Chroma com ids, documents, metadatas e embeddings.
 
-Recuperação e geração
+**Recuperação e geração**
 
 O retriever consulta a coleção com query_embeddings (embedding da pergunta) e retorna top-k por distância.
 
@@ -134,7 +161,7 @@ O reranker atual é um no-op (ordena por distância). É trivial trocar por um c
 
 O prompt builder agrega os snippets mais relevantes e instrui o LLM a responder somente com base no contexto e citar fontes.
 
-Exemplo de Request/Response
+**Exemplo de Request/Response**
 
 Request:
 
