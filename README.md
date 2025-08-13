@@ -1,4 +1,4 @@
-## RAG PoC Corporativo (Replicável) — FastAPI + ChromaDB + OpenAI
+# RAG PoC Corporativo (Replicável) — FastAPI + ChromaDB + OpenAI
 
 PoC de Retrieval-Augmented Generation (RAG) baseada em um projeto real aplicado em cliente e disponibilizada em formato simples para reprodução rápida. O objetivo é reduzir o tempo entre ideia e demonstração, oferecer um baseline técnico claro e facilitar a evolução colaborativa.
 
@@ -46,7 +46,7 @@ flowchart LR
   C <-- query_embeddings --> I
 ```
 
-**Stack**
+## **Stack**
 
 Linguagem/Runtime: Python 3.11, FastAPI, Uvicorn.
 
@@ -56,7 +56,7 @@ Embeddings: OpenAI (text-embedding-3-large/small) — com opção futura de Sent
 
 LLM: OpenAI Chat (gpt-4o-mini padrão, ajustável via .env).
 
-# Quickstart
+## Quickstart
 
 **1) Setup**
 
@@ -145,7 +145,7 @@ rag-genai-poc/
 
 └─ .gitignore
 
-# Detalhes técnicos relevantes
+## Detalhes técnicos relevantes
 
 **Ingestão e indexação**
 
@@ -166,29 +166,35 @@ O prompt builder agrega os snippets mais relevantes e instrui o LLM a responder 
 Request:
 
 POST /ask
+
 Content-Type: application/json
-{
-  "question": "Quais são os principais pontos do documento X?"
-}
+
+    {
+    "question": "Quais são os principais pontos do documento X?"
+    }
 
 
 Response (exemplo abreviado):
 
 {
-  "answer": "... [Lei_9099.pdf#p1-c0]",
+
+  "answer": "... [doc_x.pdf#p1-c0]",
+  
   "sources": [
+  
     {
-      "title": "Lei_9099.pdf",
+      "title": "doc_x.pdf",
       "page": 1,
       "section": 0,
-      "source": "data/raw/Lei_9099.pdf",
+      "source": "data/raw/doc_x.pdf",
       "doc_id": "44f0d31e...",
-      "snippet": "Art. 1º ..."
+      "snippet": "xxxx ..."
     }
+    
   ]
 }
 
-# Roadmap (aberto a contribuições)
+## Roadmap (aberto a contribuições)
 
 Re-ranking com cross-encoder local (SentenceTransformers) para melhorar precisão.
 
@@ -212,7 +218,7 @@ Formato de mensagens inválido: a API de chat espera messages=[{role, content}, 
 
 Chroma include: use somente itens válidos em include=["documents","metadatas","distances"].
 
-# Licença e uso interno
+## Licença e uso interno
 
 PoC criada para uso interno/educacional e rápida validação. Adapte livremente para seus casos.
 
