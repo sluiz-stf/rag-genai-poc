@@ -1,6 +1,6 @@
 ## RAG PoC Corporativo (Replicável) — FastAPI + ChromaDB + OpenAI
 
-Como embaixadora de IA, compartilho esta PoC de Retrieval-Augmented Generation (RAG) baseada em um projeto real aplicado em cliente e disponibilizada em formato simples para reprodução rápida. O objetivo é reduzir o tempo entre ideia e demonstração, oferecer um baseline técnico claro e facilitar a evolução colaborativa.
+PoC de Retrieval-Augmented Generation (RAG) baseada em um projeto real aplicado em cliente e disponibilizada em formato simples para reprodução rápida. O objetivo é reduzir o tempo entre ideia e demonstração, oferecer um baseline técnico claro e facilitar a evolução colaborativa.
 
 O que é RAG (em termos práticos)
 
